@@ -1,0 +1,6 @@
+# the file is automatically created when using git
+# this is the line that needs to be manually put
+
+# .gitignore
+node_modules
+.env

@@ -45,11 +45,17 @@ exports.setUser = async (req, res) => {
 
 
 exports.deleteUser = async (req, res) => {
-  const delEmail = req.body.email;
+  const {userID} = req.params;
+  //console.log(userID);
   try {
-    const user = await userModel.removeUser(delEmail)
+    const deleted = await userModel.removeUser(userID);
+    if (deleted) {
+      res.status(200).json({ message: 'User deleted successfully' });
+    } else {
+      res.status(404).json({ error: 'User not found' });
+    }
   } catch (error) {
     console.error(error)
-    res.status(500).json({ error: 'Internal Server Error' })
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 }

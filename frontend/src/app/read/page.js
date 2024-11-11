@@ -4,6 +4,8 @@ import axios from "axios";
 
 export default function Home() {
     const [userList, setUserList] = useState([])
+    const [error, setError] = useState(null)
+    const [success, setSuccess] = useState(null)
     
     useEffect(() => {
         // const url = "http://localhost:8000/api/read";
@@ -13,14 +15,25 @@ export default function Home() {
         })
     }, []);
     
-    const deleteUser = () => {
-      const delURL = "http://localhost:8000/api_n_tier/delete";
-      axios.delete(delURL, email)
+    const deleteUser = async (id) => {
+      const delURL = `http://localhost:8000/api_n_tier/delete/${id}`;
+      try {
+        const response = await axios.delete(delURL);
+        setUserList(userList.filter(user => user.uid !== id));
+        setSuccess(response.data.message);
+      }
+      catch (err) {
+        console.log("Error deleting user: ",err)
+        setError(err.response ? err.response.data.error : err.message);
+      }
     }
 
   return (
     <div className="App">
       <h1 className="text-center">CRUD Prototype (Read, Delete)</h1>
+      
+      {success && <p className="text-green-500 mb-4">{success}</p>}
+      {error && <p className="text-red-500 mb-4">{error}</p>}
 
       <table>
         <thead>
@@ -40,11 +53,12 @@ export default function Home() {
                 <td>{user.email}</td>
                 <td>{user.password}</td>
                 <td><a href="/">Update</a></td>
-                <td><button onClick={deleteUser}>Delete</button></td>
+                <td><button onClick={() =>deleteUser(user.uid)}>Delete</button></td>
             </tr>
         ))}
         </tbody>
       </table>
+      <button onClick={() =>deleteUser(1000)}> Testing </button>
     </div>
   );
 };

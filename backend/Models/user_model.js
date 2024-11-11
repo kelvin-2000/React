@@ -44,8 +44,8 @@ exports.createUser = async (email, password) => {
     return result
 }
 
-exports.removeUser = async (email) => {
-    const sqlDelete = "DELETE FROM users WHERE email = ?";
-    const [result] = await pool.query(sqlDelete, [email])
+exports.removeUser = async (id) => {
+    const sqlDelete = "DELETE FROM users WHERE uid = ?";
+    const [result] = await pool.query(sqlDelete, [id])
     return result.affectedRows > 0
 }

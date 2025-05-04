@@ -4,7 +4,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 
 
-//gonna create an app thru that express variable
+//gonna create an app thru that express variable  //test
 const app = express();
 
 const mysql = require('mysql2');
